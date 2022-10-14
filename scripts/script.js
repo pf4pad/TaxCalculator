@@ -35,15 +35,18 @@ const formatCurrency = n =>
   calcLabelExpenses.style.display = 'none'
 
   formAusn.addEventListener('input', () => {
+    const income = +formAusn.income.value
 
     if (formAusn.type.value === 'income') {
       calcLabelExpenses.style.display = 'none'
-      resultTaxTotal.textContent = formatCurrency(formAusn.income.value * 0.08)
+      resultTaxTotal.textContent = formatCurrency(income * 0.08)
       formAusn.expenses.textContent = ''
     }
     if (formAusn.type.value === 'expenses') {
+      const expenses = +formAusn.expenses.value
+      const profit = income < expenses ? 0 : income - expenses
       calcLabelExpenses.style.display = ''
-      resultTaxTotal.textContent = formatCurrency((formAusn.income.value - formAusn.expenses.value) * 0.2)
+      resultTaxTotal.textContent = formatCurrency((profit) * 0.2)
     }
   })
 }
@@ -73,23 +76,23 @@ const formatCurrency = n =>
 
   checkCompanstation()
 
+  const individual = +formSelfEmployment.individual.value
+  const entity = +formSelfEmployment.entity.value
 
   formSelfEmployment.addEventListener('input', () => {
-    const resIndividual = formSelfEmployment.individual.value * 0.04
-    const resEntity = formSelfEmployment.entity.value * 0.06
+    const resIndividual = individual * 0.04
+    const resEntity = entity * 0.06
 
     checkCompanstation()
 
+
+    const compensation = +formSelfEmployment.compensation.value
     const tax = resIndividual + resEntity
-    formSelfEmployment.compensation.value =
-      formSelfEmployment.compensation.value > 10000
-        ? 10000
-        : formSelfEmployment.compensation.value
+    compensation = compensation > 10000 ? 10000 : compensation
 
-    const benefit = formSelfEmployment.compensation.value
+    const benefit = compensation
 
-    const resBenefit = formSelfEmployment.individual.value * 0.01 +
-      formSelfEmployment.entity.value * 0.02
+    const resBenefit = individual * 0.01 + entity * 0.02
 
     const finalBenefit = benefit - resBenefit > 0 ? benefit - resBenefit : 0
     const finalTax = tax - (benefit - finalBenefit)
@@ -134,9 +137,9 @@ const formatCurrency = n =>
   formOsno.addEventListener('input', () => {
     checkFormBusiness()
 
-    const income = formOsno.income.value
-    const expenses = formOsno.expenses.value
-    const property = formOsno.property.value
+    const income = +formOsno.income.value
+    const expenses = +formOsno.expenses.value
+    const property = +formOsno.property.value
 
     // НДС
     const nds = income * 0.2
@@ -144,7 +147,7 @@ const formatCurrency = n =>
     const taxProperty = property * 0.02
 
     // НДФЛ(Вычет в виде расходов)
-    const profit = income - expenses
+    const profit = income < expenses ? 0 : income - expenses
     const ndflExpensesTotal = profit * 0.13
     // НДФЛ(Вычет 20 % от доходов)
     const ndflIncomeTotal = (income - nds) * 0.13
@@ -212,10 +215,10 @@ const formatCurrency = n =>
   formUsn.addEventListener('input', () => {
     typeTax[formUsn.typeTax.value]()
 
-    const income = formUsn.income.value
-    const expenses = formUsn.expenses.value
-    const contributions = formUsn.contributions.value
-    const property = formUsn.property.value
+    const income = +formUsn.income.value
+    const expenses = +formUsn.expenses.value
+    const contributions = +formUsn.contributions.value
+    const property = +formUsn.property.value
 
     let profit = income - contributions
 
@@ -230,11 +233,27 @@ const formatCurrency = n =>
     const tax = summ * percent[formUsn.typeTax.value]
     const taxProperty = property * 0.02
 
-    resultTaxTotal.textContent = formatCurrency(tax)
+    resultTaxTotal.textContent = formatCurrency(tax < 0 ? 0 : tax)
     resultTaxProperty.textContent = formatCurrency(taxProperty)
   })
 
+}
 
 
+// 13%
+{
+  const taxReturn = document.querySelector('.tax-return')
+  const formTaxReturn = taxReturn.querySelector('')
+
+
+  const resultTaxNdfl = taxReturn.querySelector('.result__tax_ndfl')
+  const resultTaxPossible = taxReturn.querySelector('.result__tax_possible')
+  const resultTaxDeduction = taxReturn.querySelector('.result__tax_deduction')
+
+  formTaxReturn.addEventListener('input', () => {
+    const expenses = +formTaxReturn.expenses.value
+    const income = + formTaxReturn.expenses.value
+
+  })
 
 }

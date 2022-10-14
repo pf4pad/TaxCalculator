@@ -116,12 +116,12 @@
             <form class="calc__form">
               <label class="calc__label calc__label_input">
                 <span class="calc__text">Расходы</span>
-                <input class="calc__input" type="number" name="a">
+                <input class="calc__input" type="number" name="expenses">
               </label>
 
               <label class="calc__label calc__label_input">
                 <span class="calc__text">Оффициальный доход за год (с оплатой НДФЛ)</span>
-                <input class="calc__input" type="number" name="b">
+                <input class="calc__input" type="number" name="income">
               </label>
             </form>
           </div>
@@ -131,17 +131,17 @@
 
             <div class="result__block">
               <p class="result__caption">НДФЛ уплаченый</p>
-              <p class="result__tax">0</p>
+              <p class="result__tax result__tax_ndfl">0</p>
             </div>
 
             <div class="result__block">
               <p class="result__caption">Желаемый налоговый вычет</p>
-              <p class="result__tax">0</p>
+              <p class="result__tax result__tax_possible">0</p>
             </div>
 
             <div class="result__block">
               <p class="result__caption">Налоговый вычет</p>
-              <p class="result__tax">0</p>
+              <p class="result__tax result__tax_deduction">0</p>
             </div>
           </div>
         </div>
